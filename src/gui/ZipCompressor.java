@@ -77,7 +77,9 @@ public class ZipCompressor {
         try {
             DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
             for (Path file : stream) {
-                if (file.getParent().toString().equals(folder.toString())) {
+                /*System.out.println(file.getParent().getFileName());
+                System.out.println(folder.getFileName());*/
+                if(file.getParent().getFileName().toString().equals(folder.getFileName().toString())) {
                     files.add(file.getFileName().toAbsolutePath().toString());
                     System.out.println(file.getFileName().toAbsolutePath().toString());
                 }

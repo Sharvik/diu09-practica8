@@ -34,37 +34,35 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="progressBar" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="originLabel" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="originTextField" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="destinationLabel" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                      <Component id="destTextField" min="-2" pref="222" max="-2" attributes="0"/>
-                                  </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="destinationLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="originLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="originTextField" pref="265" max="32767" attributes="0"/>
+                                  <Component id="destTextField" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="originButton" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="destButton" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
-                              <Component id="compressButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="progressBar" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="10" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="compressButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="162" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -83,19 +81,17 @@
                   <Component id="destTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="destButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="compressButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Component id="progressBar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="17" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="currentFileLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="authorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace pref="19" max="32767" attributes="0"/>
+              <Component id="currentFileLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="authorLabel" min="-2" pref="13" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -103,12 +99,12 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="originLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Input file : "/>
+        <Property name="text" type="java.lang.String" value="Input folder : "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="destinationLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Output file : "/>
+        <Property name="text" type="java.lang.String" value="Output folder : "/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="originTextField">
@@ -117,12 +113,12 @@
     </Component>
     <Component class="javax.swing.JButton" name="originButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Browse"/>
+        <Property name="text" type="java.lang.String" value="Add folder..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="destButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Browse"/>
+        <Property name="text" type="java.lang.String" value="Add folder..."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="currentFileLabel">
@@ -130,7 +126,7 @@
     <Component class="javax.swing.JLabel" name="authorLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="12" style="1"/>
+          <Font name="Tahoma" size="10" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="David Medina &amp; Geraldo Rodrigues"/>
       </Properties>

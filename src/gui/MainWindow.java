@@ -42,15 +42,15 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperZIP");
 
-        originLabel.setText("Input file : ");
+        originLabel.setText("Input folder : ");
 
-        destinationLabel.setText("Output file : ");
+        destinationLabel.setText("Output folder : ");
 
-        originButton.setText("Browse");
+        originButton.setText("Add folder...");
 
-        destButton.setText("Browse");
+        destButton.setText("Add folder...");
 
-        authorLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        authorLabel.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         authorLabel.setText("David Medina & Geraldo Rodrigues");
 
         compressButton.setText("Compress");
@@ -70,28 +70,27 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(authorLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(destinationLabel)
+                                    .addComponent(originLabel))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(originLabel)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(originTextField))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(destinationLabel)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(destTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(43, 43, 43)
+                                    .addComponent(originTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                                    .addComponent(destTextField))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(originButton)
-                                    .addComponent(destButton)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(92, 92, 92)
-                                .addComponent(compressButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(cancelButton))
-                            .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 10, Short.MAX_VALUE)))
+                                    .addComponent(destButton))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(compressButton)
+                .addGap(18, 18, 18)
+                .addComponent(cancelButton)
+                .addGap(162, 162, 162))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,17 +105,16 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(destinationLabel)
                     .addComponent(destTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(destButton))
-                .addGap(35, 35, 35)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(compressButton)
                     .addComponent(cancelButton))
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(currentFileLabel)
-                    .addComponent(authorLabel))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addComponent(currentFileLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(authorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();

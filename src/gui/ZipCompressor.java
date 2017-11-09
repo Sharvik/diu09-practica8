@@ -2,6 +2,7 @@ package gui;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class ZipCompressor {
     private final int BUFFER_SIZE = 512;
 
     public void compressFolder(Path folder, String stdout) {
-        generateFileList(folder);
+        //generateFileList(folder);
 
         try {
             // Objeto para referenciar a los archivos que queremos comprimir
@@ -73,22 +74,31 @@ public class ZipCompressor {
         this.stdout = stdout;
     }
 
-    public void generateFileList(Path folder) {
-        try {
-            DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
-            for (Path file : stream) {
-                if (file.getParent().toString().equals(folder.toString())) {
-                    files.add(file.getFileName().toAbsolutePath().toString());
-                    System.out.println(file.getFileName().toAbsolutePath().toString());
-                }
+    public void generateFileList(String folder) {
+        String filename;
+        File stream = new File(folder);
+        File[] filelist = stream.listFiles();
+        for (File file : filelist) {
+            if (file.isFile()) {
+                filename = file.getAbsolutePath();
+                System.out.println(filename);
             }
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Cannot list files in the selected directory",
-                    "Error compressing file",
-                    JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(ZipCompressor.class.getName()).log(Level.SEVERE, null, ex);
         }
+        /*try {
+        DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
+        for (Path file : stream) {
+        if (file.getParent().toString().equals(folder.toString())) {
+        files.add(file.getFileName().toAbsolutePath().toString());
+        System.out.println(file.getFileName().toAbsolutePath().toString());
+        }
+        }
+        } catch (IOException ex) {
+        JOptionPane.showMessageDialog(
+        null,
+        "Cannot list files in the selected directory",
+        "Error compressing file",
+        JOptionPane.ERROR_MESSAGE);
+        Logger.getLogger(ZipCompressor.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
 }

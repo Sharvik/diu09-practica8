@@ -60,11 +60,21 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         destButton.setText("Add folder...");
+        destButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                destButtonActionPerformed(evt);
+            }
+        });
 
         authorLabel.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         authorLabel.setText("David Medina & Geraldo Rodrigues");
 
         compressButton.setText("Compress");
+        compressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compressButtonActionPerformed(evt);
+            }
+        });
 
         cancelButton.setText("Cancel");
 
@@ -148,12 +158,38 @@ public class MainWindow extends javax.swing.JFrame {
             } else {
                 String filename = fc.getSelectedFile().getAbsolutePath();
                 ZipCompressor zip = new ZipCompressor();
-                zip.generateFileList(fc.getSelectedFile().toPath());
+                zip.generateFileList(fc.getSelectedFile().getAbsolutePath());
                 originTextField.setText(filename);
             }
             
         }
     }//GEN-LAST:event_originButtonActionPerformed
+
+    private void destButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser(System.getProperty("user.home"));
+        
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int res = fc.showOpenDialog(null);
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+            if(!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "The object selected is not a directory",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                String filename = fc.getSelectedFile().getAbsolutePath();
+                destTextField.setText(filename);
+            }
+            
+        }
+    }//GEN-LAST:event_destButtonActionPerformed
+
+    private void compressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compressButtonActionPerformed
+        
+    }//GEN-LAST:event_compressButtonActionPerformed
 
     /**
      * @param args the command line arguments

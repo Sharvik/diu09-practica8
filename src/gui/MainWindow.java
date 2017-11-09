@@ -5,6 +5,12 @@
  */
 package gui;
 
+import java.nio.file.Path;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Entrar
@@ -47,6 +53,11 @@ public class MainWindow extends javax.swing.JFrame {
         destinationLabel.setText("Output folder : ");
 
         originButton.setText("Add folder...");
+        originButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                originButtonActionPerformed(evt);
+            }
+        });
 
         destButton.setText("Add folder...");
 
@@ -120,6 +131,29 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void originButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originButtonActionPerformed
+        JFileChooser fc = new JFileChooser(System.getProperty("user.home"));
+        
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int res = fc.showOpenDialog(null);
+
+        if (res == JFileChooser.APPROVE_OPTION) {
+            if(!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "The object selected is not a directory",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                String filename = fc.getSelectedFile().getAbsolutePath();
+                ZipCompressor zip = new ZipCompressor();
+                zip.generateFileList(fc.getSelectedFile().toPath());
+                originTextField.setText(filename);
+            }
+            
+        }
+    }//GEN-LAST:event_originButtonActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,6 +6,9 @@
 package gui;
 
 import java.nio.file.Path;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -77,6 +80,12 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         cancelButton.setText("Cancel");
+        cancelButton.setEnabled(false);
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -144,12 +153,12 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void originButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originButtonActionPerformed
         JFileChooser fc = new JFileChooser(System.getProperty("user.home"));
-        
+
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int res = fc.showOpenDialog(null);
 
         if (res == JFileChooser.APPROVE_OPTION) {
-            if(!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
+            if (!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
                 JOptionPane.showMessageDialog(
                         null,
                         "The object selected is not a directory",
@@ -157,23 +166,21 @@ public class MainWindow extends javax.swing.JFrame {
                         JOptionPane.ERROR_MESSAGE);
             } else {
                 String filename = fc.getSelectedFile().getAbsolutePath();
-                ZipCompressor zip = new ZipCompressor();
-                zip.generateFileList(fc.getSelectedFile().getAbsolutePath());
                 originTextField.setText(filename);
             }
-            
+
         }
     }//GEN-LAST:event_originButtonActionPerformed
 
     private void destButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destButtonActionPerformed
         // TODO add your handling code here:
         JFileChooser fc = new JFileChooser(System.getProperty("user.home"));
-        
+
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int res = fc.showOpenDialog(null);
 
         if (res == JFileChooser.APPROVE_OPTION) {
-            if(!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
+            if (!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
                 JOptionPane.showMessageDialog(
                         null,
                         "The object selected is not a directory",
@@ -183,13 +190,37 @@ public class MainWindow extends javax.swing.JFrame {
                 String filename = fc.getSelectedFile().getAbsolutePath();
                 destTextField.setText(filename);
             }
-            
+
         }
     }//GEN-LAST:event_destButtonActionPerformed
 
     private void compressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compressButtonActionPerformed
-        
+        if (originTextField.getText().isEmpty() || destTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "We need one input folder and one output folder",
+                    "Folders",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } else {
+            if (originTextField.getText().equals(destTextField.getText())) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "The folders can not be the same",
+                        "Same folders",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                wk = new Worker(originTextField.getText(), destTextField.getText(), progressBar);
+                wk.execute();
+                cancelButton.setEnabled(true);
+                
+            }
+        }
     }//GEN-LAST:event_compressButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        wk.cancel(true);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,4 +270,5 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField originTextField;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
+    private Worker wk;
 }

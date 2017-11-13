@@ -18,8 +18,8 @@ public class ZipCompressor {
 
     private final int BUFFER_SIZE = 512;
 
-    public void compressFolder(Path folder, String stdout) {
-        //generateFileList(folder);
+    public void compressFolder( String folder,String stdout) {
+        generateFileList(folder);
 
         try {
             // Objeto para referenciar a los archivos que queremos comprimir
@@ -68,14 +68,13 @@ public class ZipCompressor {
         this.stdout = stdout;
     }
 
-    public void generateFileList(String folder) {
+    private void generateFileList(String folder) {
         String filename;
         File stream = new File(folder);
         File[] filelist = stream.listFiles();
         for (File file : filelist) {
             if (file.isFile()) {
-                filename = file.getAbsolutePath();
-                System.out.println(filename);
+                files.add(file.getAbsolutePath()) ;
             }
         }
         /*try {

@@ -13,14 +13,15 @@ import java.util.zip.*;
 
 public class ZipCompressor {
 
-    private List<String> files = new ArrayList<String>();
-    private String stdout;
+    private List<String> files = new ArrayList<>();
+    //  private String stdout;
 
     private final int BUFFER_SIZE = 512;
+    private int nFile;
 
-    public void compressFolder( String folder,String stdout) {
+    public void compressFolder(String folder, String stdout, Worker wk) {
         generateFileList(folder);
-
+        wk.setMax(files.size());
         try {
             // Objeto para referenciar a los archivos que queremos comprimir
             BufferedInputStream origin = null;
@@ -30,13 +31,16 @@ public class ZipCompressor {
             // Buffer de transferencia para mandar datos a comprimir
             byte[] data = new byte[BUFFER_SIZE];
             Iterator i = files.iterator();
+
             while (i.hasNext()) {
                 String filename = (String) i.next();
+                wk.setText(filename);
                 FileInputStream fi = new FileInputStream(filename);
                 origin = new BufferedInputStream(fi, BUFFER_SIZE);
 
                 ZipEntry entry = new ZipEntry(filename);
                 out.putNextEntry(entry);
+                wk.cuenta(nFile);
                 // Leemos datos desde el archivo origen y los mandamos al archivo destino
                 int count;
                 while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
@@ -44,6 +48,7 @@ public class ZipCompressor {
                 }
                 // Cerramos el archivo origen, ya enviado a comprimir
                 origin.close();
+                nFile++;
             }
             // Cerramos el archivo zip
             out.close();
@@ -60,23 +65,15 @@ public class ZipCompressor {
         this.files = files;
     }
 
-    public String getStdout() {
-        return stdout;
-    }
-
-    public void setStdout(String stdout) {
-        this.stdout = stdout;
-    }
-
     private void generateFileList(String folder) {
-        String filename;
         File stream = new File(folder);
         File[] filelist = stream.listFiles();
         for (File file : filelist) {
             if (file.isFile()) {
-                files.add(file.getAbsolutePath()) ;
+                files.add(file.getAbsolutePath());
             }
         }
+
         /*try {
         DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
         for (Path file : stream) {

@@ -210,10 +210,10 @@ public class MainWindow extends javax.swing.JFrame {
                         "Same folders",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                wk = new Worker(originTextField.getText(), destTextField.getText(), progressBar);
+                wk = new Worker(originTextField.getText(), destTextField.getText(), progressBar, currentFileLabel);
                 wk.execute();
                 cancelButton.setEnabled(true);
-                
+
             }
         }
     }//GEN-LAST:event_compressButtonActionPerformed

@@ -9,7 +9,7 @@ import javax.swing.SwingWorker;
 
 public class Worker extends SwingWorker<Boolean, Integer> {
 
-    private ZipCompressor zip;
+    private final ZipCompressor zip;
     private final JProgressBar progress;
     private final JLabel label;
     private final JButton compressButton;
@@ -18,7 +18,6 @@ public class Worker extends SwingWorker<Boolean, Integer> {
     public void setText(String text) {
         this.text = text;
     }
-    
 
     public Worker(ZipCompressor zip, JProgressBar progress, JLabel label, JButton compressButton) {
         this.zip = zip;
@@ -26,7 +25,6 @@ public class Worker extends SwingWorker<Boolean, Integer> {
         this.label = label;
         this.compressButton = compressButton;
     }
-
 
     @Override
     protected Boolean doInBackground() throws Exception {
@@ -66,5 +64,4 @@ public class Worker extends SwingWorker<Boolean, Integer> {
         return this.isCancelled();
     }
 
-    
 }

@@ -166,11 +166,11 @@ public class MainWindow extends javax.swing.JFrame {
             } else {
                 String filename = fc.getSelectedFile().getAbsolutePath();
                 originTextField.setText(filename);
-                
-                if(!destTextField.getText().isEmpty())
-                    compressButton.setEnabled(true);
-            }
 
+                if (!destTextField.getText().isEmpty()) {
+                    compressButton.setEnabled(true);
+                }
+            }
         }
     }//GEN-LAST:event_originButtonActionPerformed
 
@@ -191,11 +191,11 @@ public class MainWindow extends javax.swing.JFrame {
             } else {
                 String filename = fc.getSelectedFile().getAbsolutePath();
                 destTextField.setText(filename);
-                
-                if(!originTextField.getText().isEmpty())
-                    compressButton.setEnabled(true);
-            }
 
+                if (!originTextField.getText().isEmpty()) {
+                    compressButton.setEnabled(true);
+                }
+            }
         }
     }//GEN-LAST:event_destButtonActionPerformed
 
@@ -207,25 +207,23 @@ public class MainWindow extends javax.swing.JFrame {
                     "Folder Error",
                     JOptionPane.ERROR_MESSAGE);
 
+        } else if (originTextField.getText().equals(destTextField.getText())) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "The folders can not be the same",
+                    "Same Folders",
+                    JOptionPane.ERROR_MESSAGE);
         } else {
-            if (originTextField.getText().equals(destTextField.getText())) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "The folders can not be the same",
-                        "Same Folders",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
-                String in = originTextField.getText();
-                String out = destTextField.getText();
-                Path parentDir = Paths.get(in).getFileName();
-                out += "\\" + parentDir.toString() + ".zip";
-                ZipCompressor zip = new ZipCompressor(in, out);
-                wk = new Worker(zip, progressBar, currentFileLabel, compressButton);
-                wk.execute();
-                compressButton.setEnabled(true);
-                cancelButton.setEnabled(true);
+            String in = originTextField.getText();
+            String out = destTextField.getText();
+            Path parentDir = Paths.get(in).getFileName();
+            out += "\\" + parentDir.toString() + ".zip";
+            ZipCompressor zip = new ZipCompressor(in, out);
+            wk = new Worker(zip, progressBar, currentFileLabel, compressButton);
+            wk.execute();
+            compressButton.setEnabled(true);
+            cancelButton.setEnabled(true);
 
-            }
         }
     }//GEN-LAST:event_compressButtonActionPerformed
 

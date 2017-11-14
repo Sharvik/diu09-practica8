@@ -5,7 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.nio.file.Path;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ public class ZipCompressor {
     private String out;
 
     private final int BUFFER_SIZE = 512;
-    
+
     public ZipCompressor(String in, String out) {
         this.in = in;
         this.out = out;
@@ -31,39 +31,39 @@ public class ZipCompressor {
         //wk.setMax(files.size());
         try {
             // Objeto para referenciar a los archivos que queremos comprimir
-            BufferedInputStream origin = null;
+            BufferedInputStream origin;
             // Objeto para referenciar el archivo zip de salida
             FileOutputStream dest = new FileOutputStream(out);
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
             // Buffer de transferencia para mandar datos a comprimir
             byte[] data = new byte[BUFFER_SIZE];
             Iterator iterator = files.iterator();
-            
+
             // Instanciamos contador para la barra de progreso
             int i = 0;
-            
+
             while (iterator.hasNext()) {
                 // ¿El usuario ha pulsado cancelar?
-                if(work.isTerminated()) break;
+                if (work.isTerminated()) break;
                 
                 String filename = (String) iterator.next();
-                
+
                 // Archivo que esta siendo comprimido actualmente
-                work.setText(filename);
-                
+                work.setText(filename.substring(filename.lastIndexOf("\\") + 1));
+
                 FileInputStream fi = new FileInputStream(filename);
                 origin = new BufferedInputStream(fi, BUFFER_SIZE);
 
                 // Creamos una entrada en ZIP con el nombre de fichero
                 // sin crear carpetas adicionales
                 String single = Paths.get(filename).getFileName().toString();
-                
+
                 ZipEntry entry = new ZipEntry(single);
                 out.putNextEntry(entry);
-                
+
                 // LLamada externa al método publish
-                work.setPublish(100*i/files.size());
-                
+                work.setPublish(100 * i / files.size());
+
                 // Leemos datos desde el archivo origen y los mandamos al archivo destino
                 int count;
                 while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
@@ -71,13 +71,13 @@ public class ZipCompressor {
                 }
                 // Cerramos el archivo origen, ya enviado a comprimir
                 origin.close();
-                
+
                 // Actualizamos contador de la barra de progreso
                 i++;
             }
             // Cerramos el archivo zip
             out.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

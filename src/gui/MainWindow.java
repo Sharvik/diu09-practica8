@@ -5,6 +5,8 @@
  */
 package gui;
 
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
@@ -50,6 +52,18 @@ public class MainWindow extends javax.swing.JFrame {
         originLabel.setText("Input folder : ");
 
         destinationLabel.setText("Output folder : ");
+
+        originTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                originTextFieldFocusLost(evt);
+            }
+        });
+
+        destTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                destTextFieldFocusLost(evt);
+            }
+        });
 
         originButton.setText("Add folder...");
         originButton.addActionListener(new java.awt.event.ActionListener() {
@@ -230,6 +244,27 @@ public class MainWindow extends javax.swing.JFrame {
         compressButton.setEnabled(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    private void originTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_originTextFieldFocusLost
+        System.out.println(originTextField.getText());
+        if(Files.isDirectory(Paths.get(originTextField.getText()), LinkOption.NOFOLLOW_LINKS)){
+            if(!destTextField.getText().isEmpty()) 
+                compressButton.setEnabled(true);
+            else
+                compressButton.setEnabled(false);
+        }
+    }//GEN-LAST:event_originTextFieldFocusLost
+
+    private void destTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_destTextFieldFocusLost
+        System.out.println(destTextField.getText());
+        System.out.println(Files.isDirectory(Paths.get(destTextField.getText())));
+        if(Files.isDirectory(Paths.get(destTextField.getText()))){
+            if(!originTextField.getText().isEmpty()) 
+                compressButton.setEnabled(true);
+            else
+                compressButton.setEnabled(false);
+        }
+    }//GEN-LAST:event_destTextFieldFocusLost
+    
     /**
      * @param args the command line arguments
      */

@@ -113,8 +113,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="originTextField">
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="originTextFieldFocusLost"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="destTextField">
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="destTextFieldFocusLost"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="originButton">
       <Properties>

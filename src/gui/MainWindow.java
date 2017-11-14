@@ -219,11 +219,8 @@ public class MainWindow extends javax.swing.JFrame {
             Path parentDir = Paths.get(in).getFileName();
             out += "\\" + parentDir.toString() + ".zip";
             ZipCompressor zip = new ZipCompressor(in, out);
-            wk = new Worker(zip, progressBar, currentFileLabel, compressButton);
+            wk = new Worker(zip, progressBar, currentFileLabel, compressButton, cancelButton);
             wk.execute();
-            compressButton.setEnabled(true);
-            cancelButton.setEnabled(true);
-
         }
     }//GEN-LAST:event_compressButtonActionPerformed
 

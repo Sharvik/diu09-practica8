@@ -13,22 +13,25 @@ public class Worker extends SwingWorker<Boolean, Integer> {
     private final JProgressBar progress;
     private final JLabel label;
     private final JButton compressButton;
+    private final JButton cancelButton;
     private String text;
+
+    public Worker(ZipCompressor zip, JProgressBar progress, JLabel label, JButton compressButton, JButton cancelButton) {
+        this.zip = zip;
+        this.progress = progress;
+        this.label = label;
+        this.compressButton = compressButton;
+        this.cancelButton = cancelButton;
+    }
 
     public void setText(String text) {
         this.text = text;
     }
 
-    public Worker(ZipCompressor zip, JProgressBar progress, JLabel label, JButton compressButton) {
-        this.zip = zip;
-        this.progress = progress;
-        this.label = label;
-        this.compressButton = compressButton;
-    }
-
     @Override
     protected Boolean doInBackground() throws Exception {
         compressButton.setEnabled(false);
+        cancelButton.setEnabled(true);
         zip.compressFolder(this);
 
         return true;
@@ -41,11 +44,13 @@ public class Worker extends SwingWorker<Boolean, Integer> {
             JOptionPane.showMessageDialog(progress.getParent(), "Cancelled", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
             progress.setValue(0);
             label.setText("");
+            cancelButton.setEnabled(false);
         } else {
             progress.setValue(100);
             JOptionPane.showMessageDialog(progress.getParent(), "Success", "Success", JOptionPane.INFORMATION_MESSAGE);
             progress.setValue(0);
             label.setText("");
+            cancelButton.setEnabled(false);
         }
     }
 

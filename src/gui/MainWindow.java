@@ -6,13 +6,9 @@
 package gui;
 
 import java.nio.file.Path;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -73,6 +69,7 @@ public class MainWindow extends javax.swing.JFrame {
         authorLabel.setText("David Medina & Geraldo Rodrigues");
 
         compressButton.setText("Compress");
+        compressButton.setEnabled(false);
         compressButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 compressButtonActionPerformed(evt);
@@ -92,14 +89,14 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(currentFileLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(authorLabel))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(currentFileLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(authorLabel))
                             .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,15 +109,13 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(originButton)
-                                    .addComponent(destButton))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(compressButton)
-                .addGap(18, 18, 18)
-                .addComponent(cancelButton)
-                .addGap(162, 162, 162))
+                                    .addComponent(destButton)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(185, 185, 185)
+                        .addComponent(compressButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelButton)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,10 +136,14 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(cancelButton))
                 .addGap(26, 26, 26)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(currentFileLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(authorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(currentFileLabel)
+                        .addGap(26, 26, 26))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(authorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -167,6 +166,9 @@ public class MainWindow extends javax.swing.JFrame {
             } else {
                 String filename = fc.getSelectedFile().getAbsolutePath();
                 originTextField.setText(filename);
+                
+                if(!destTextField.getText().isEmpty())
+                    compressButton.setEnabled(true);
             }
 
         }
@@ -189,6 +191,9 @@ public class MainWindow extends javax.swing.JFrame {
             } else {
                 String filename = fc.getSelectedFile().getAbsolutePath();
                 destTextField.setText(filename);
+                
+                if(!originTextField.getText().isEmpty())
+                    compressButton.setEnabled(true);
             }
 
         }
@@ -198,8 +203,8 @@ public class MainWindow extends javax.swing.JFrame {
         if (originTextField.getText().isEmpty() || destTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(
                     null,
-                    "We need one input folder and one output folder",
-                    "Folders",
+                    "Unknown origin and/or destination folder",
+                    "Folder Error",
                     JOptionPane.ERROR_MESSAGE);
 
         } else {
@@ -207,11 +212,17 @@ public class MainWindow extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(
                         null,
                         "The folders can not be the same",
-                        "Same folders",
+                        "Same Folders",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                wk = new Worker(originTextField.getText(), destTextField.getText(), progressBar, currentFileLabel);
+                String in = originTextField.getText();
+                String out = destTextField.getText();
+                Path parentDir = Paths.get(in).getFileName();
+                out += "\\" + parentDir.toString() + ".zip";
+                ZipCompressor zip = new ZipCompressor(in, out);
+                wk = new Worker(zip, progressBar, currentFileLabel, compressButton);
                 wk.execute();
+                compressButton.setEnabled(true);
                 cancelButton.setEnabled(true);
 
             }
@@ -220,6 +231,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         wk.cancel(true);
+        cancelButton.setEnabled(false);
+        compressButton.setEnabled(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**

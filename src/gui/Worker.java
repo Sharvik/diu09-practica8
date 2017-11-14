@@ -1,17 +1,18 @@
 package gui;
 
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
-public class Worker extends SwingWorker<Void, Integer> {
+public class Worker extends SwingWorker<Boolean, Integer> {
 
-    private final String in;
-    private final String out;
-    private final JProgressBar progreso;
-    private final JLabel jl;
+    private ZipCompressor zip;
+    private final JProgressBar progress;
+    private final JLabel label;
+    private final JButton compressButton;
     private String text;
 
     public void setText(String text) {
@@ -19,45 +20,50 @@ public class Worker extends SwingWorker<Void, Integer> {
     }
     
 
-    public Worker(String in, String out, JProgressBar progreso, JLabel jl) {
-        this.in = in;
-        this.out = out;
-        this.progreso = progreso;
-        this.jl = jl;
+    public Worker(ZipCompressor zip, JProgressBar progress, JLabel label, JButton compressButton) {
+        this.zip = zip;
+        this.progress = progress;
+        this.label = label;
+        this.compressButton = compressButton;
     }
 
 
     @Override
-    protected Void doInBackground() throws Exception {
-        ZipCompressor zip = new ZipCompressor();
-        zip.compressFolder(in, out + "\\folder.zip", this);
-        return null;
+    protected Boolean doInBackground() throws Exception {
+        compressButton.setEnabled(false);
+        zip.compressFolder(this);
+
+        return true;
     }
 
     @Override
     protected void done() {
 
         if (isCancelled()) {
-            JOptionPane.showMessageDialog(progreso.getParent(), "Cancelled", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(progress.getParent(), "Cancelled", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
+            progress.setValue(0);
+            label.setText("");
         } else {
-
-            JOptionPane.showMessageDialog(progreso.getParent(), "Success", "Success", JOptionPane.INFORMATION_MESSAGE);
+            progress.setValue(100);
+            JOptionPane.showMessageDialog(progress.getParent(), "Success", "Success", JOptionPane.INFORMATION_MESSAGE);
+            progress.setValue(0);
+            label.setText("");
         }
     }
 
     @Override
     protected void process(List<Integer> chunks) {
         int i = chunks.get(chunks.size() - 1);
-        progreso.setValue(i);
-        jl.setText(text);
+        progress.setValue(i);
+        label.setText(text);
     }
 
-    public void cuenta(int i) {
+    public void setPublish(int i) {
         publish(i);
     }
 
-    public void setMax(int max) {
-        progreso.setMaximum(max);
+    public boolean isTerminated() {
+        return this.isCancelled();
     }
 
     

@@ -28,7 +28,6 @@ public class ZipCompressor {
     }
 
     public void compressFolder(Worker work) {
-        //wk.setMax(files.size());
         try {
             // Objeto para referenciar a los archivos que queremos comprimir
             BufferedInputStream origin;

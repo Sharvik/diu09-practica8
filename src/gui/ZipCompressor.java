@@ -97,22 +97,5 @@ public class ZipCompressor {
                 files.add(file.getAbsolutePath());
             }
         }
-
-        /*try {
-        DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
-        for (Path file : stream) {
-        if (file.getParent().toString().equals(folder.toString())) {
-        files.add(file.getFileName().toAbsolutePath().toString());
-        System.out.println(file.getFileName().toAbsolutePath().toString());
-        }
-        }
-        } catch (IOException ex) {
-        JOptionPane.showMessageDialog(
-        null,
-        "Cannot list files in the selected directory",
-        "Error compressing file",
-        JOptionPane.ERROR_MESSAGE);
-        Logger.getLogger(ZipCompressor.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
     }
 }

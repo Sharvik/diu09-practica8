@@ -14,9 +14,9 @@ import java.util.zip.*;
 
 public class ZipCompressor {
 
-    private List<String> files;
-    private String in;
-    private String out;
+    private final List<String> files;
+    private final String in;
+    private final String out;
 
     private final int BUFFER_SIZE = 512;
 
@@ -28,7 +28,6 @@ public class ZipCompressor {
     }
 
     public void compressFolder(Worker work) {
-        //wk.setMax(files.size());
         try {
             // Objeto para referenciar a los archivos que queremos comprimir
             BufferedInputStream origin;
@@ -81,39 +80,14 @@ public class ZipCompressor {
             e.printStackTrace();
         }
     }
-
-    public List<String> getFiles() {
-        return files;
-    }
-
-    public void setFiles(List<String> files) {
-        this.files = files;
-    }
-
+    
     private void generateFileList() {
-        File stream = new File(in);
-        File[] filelist = stream.listFiles();
+        File directory = new File(in);
+        File[] filelist = directory.listFiles();
         for (File file : filelist) {
             if (file.isFile()) {
                 files.add(file.getAbsolutePath());
             }
         }
-
-        /*try {
-        DirectoryStream<Path> stream = Files.newDirectoryStream(folder);
-        for (Path file : stream) {
-        if (file.getParent().toString().equals(folder.toString())) {
-        files.add(file.getFileName().toAbsolutePath().toString());
-        System.out.println(file.getFileName().toAbsolutePath().toString());
-        }
-        }
-        } catch (IOException ex) {
-        JOptionPane.showMessageDialog(
-        null,
-        "Cannot list files in the selected directory",
-        "Error compressing file",
-        JOptionPane.ERROR_MESSAGE);
-        Logger.getLogger(ZipCompressor.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
     }
 }

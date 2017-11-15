@@ -171,7 +171,7 @@ public class MainWindow extends javax.swing.JFrame {
         int res = fc.showOpenDialog(null);
 
         if (res == JFileChooser.APPROVE_OPTION) {
-            if (!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
+            if (!fc.getSelectedFile().isDirectory()) {
                 JOptionPane.showMessageDialog(
                         null,
                         "The object selected is not a directory",
@@ -196,7 +196,7 @@ public class MainWindow extends javax.swing.JFrame {
         int res = fc.showOpenDialog(null);
 
         if (res == JFileChooser.APPROVE_OPTION) {
-            if (!fc.getSelectedFile().isDirectory()/*|| !fc.getSelectedFile().*/) {
+            if (!fc.getSelectedFile().isDirectory()) {
                 JOptionPane.showMessageDialog(
                         null,
                         "The object selected is not a directory",
@@ -220,7 +220,6 @@ public class MainWindow extends javax.swing.JFrame {
                     "Unknown origin and/or destination folder",
                     "Folder Error",
                     JOptionPane.ERROR_MESSAGE);
-
         } else if (originTextField.getText().equals(destTextField.getText())) {
             JOptionPane.showMessageDialog(
                     null,

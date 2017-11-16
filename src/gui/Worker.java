@@ -81,17 +81,11 @@ public class Worker extends SwingWorker<Boolean, Integer> {
     }
     
     public void pause() {
-        if (!isPaused() && !isDone()) {
-            isPaused = true;
-            System.out.println("PAUSED");
-        }
+        if (!isPaused() && !isDone()) isPaused = true;
     }
     
     public void resume() {
-        if (isPaused() && !isDone()) {
-            isPaused = false;
-            System.out.println("RESUMED");
-        }
+        if (isPaused() && !isDone()) isPaused = false;
     }
 
     public boolean isPaused() {

@@ -5,6 +5,7 @@
  */
 package gui;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -328,11 +329,10 @@ public class MainWindow extends javax.swing.JFrame {
                     "Same Folders",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            String in = originTextField.getText();
-            String out = destTextField.getText();
-            Path parentDir = Paths.get(in).getFileName();
-            out += "\\" + parentDir.toString() + ".zip";
-            ZipCompressor zip = new ZipCompressor(in, out);
+            Path in = Paths.get(originTextField.getText());
+            Path out = Paths.get(destTextField.getText() + File.separator +  in.getFileName().toString());
+            System.out.println(out);
+            ZipCompressor zip = new ZipCompressor(in.toString(), out.toString());
             wk = new Worker(zip, progressBar, currentFileLabel, compressButton, cancelButton);
             wk.execute();
         }

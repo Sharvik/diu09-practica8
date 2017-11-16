@@ -51,7 +51,7 @@ public class ZipCompressor {
                 String filename = (String) iterator.next();
 
                 // Archivo que esta siendo comprimido actualmente
-                work.setText(filename.substring(filename.lastIndexOf("\\") + 1));
+                work.setText(Paths.get(filename).getFileName().toString());
 
                 FileInputStream fi = new FileInputStream(filename);
                 origin = new BufferedInputStream(fi, BUFFER_SIZE);

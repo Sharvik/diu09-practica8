@@ -1,6 +1,11 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,6 +20,7 @@ public class Worker extends SwingWorker<Boolean, Integer> {
     private final JButton compressButton;
     private final JButton cancelButton;
     private String text;
+    private boolean isPaused;
 
     public Worker(ZipCompressor zip, JProgressBar progress, JLabel label, JButton compressButton, JButton cancelButton) {
         this.zip = zip;
@@ -22,6 +28,7 @@ public class Worker extends SwingWorker<Boolean, Integer> {
         this.label = label;
         this.compressButton = compressButton;
         this.cancelButton = cancelButton;
+        this.isPaused = true;
     }
 
     public void setText(String text) {
@@ -30,6 +37,7 @@ public class Worker extends SwingWorker<Boolean, Integer> {
 
     @Override
     protected Boolean doInBackground() throws Exception {
+        this.isPaused = false;
         compressButton.setEnabled(false);
         cancelButton.setEnabled(true);
         zip.compressFolder(this);
@@ -41,16 +49,19 @@ public class Worker extends SwingWorker<Boolean, Integer> {
     protected void done() {
 
         if (isCancelled()) {
-            JOptionPane.showMessageDialog(progress.getParent(), "Cancelled", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
             progress.setValue(0);
             label.setText("");
             cancelButton.setEnabled(false);
         } else {
             progress.setValue(100);
-            JOptionPane.showMessageDialog(progress.getParent(), "Success", "Success", JOptionPane.INFORMATION_MESSAGE);
+            cancelButton.setEnabled(false);
+            JOptionPane.showMessageDialog(
+                    progress.getParent(), 
+                    "Success",
+                    "Success", 
+                    JOptionPane.INFORMATION_MESSAGE);
             progress.setValue(0);
             label.setText("");
-            cancelButton.setEnabled(false);
         }
     }
 
@@ -68,5 +79,23 @@ public class Worker extends SwingWorker<Boolean, Integer> {
     public boolean isTerminated() {
         return this.isCancelled();
     }
+    
+    public void pause() {
+        if (!isPaused() && !isDone()) {
+            isPaused = true;
+            System.out.println("PAUSED");
+        }
+    }
+    
+    public void resume() {
+        if (isPaused() && !isDone()) {
+            isPaused = false;
+            System.out.println("RESUMED");
+        }
+    }
 
+    public boolean isPaused() {
+        return isPaused;
+    }
+    
 }

@@ -27,7 +27,7 @@ public class ZipCompressor {
         generateFileList();
     }
 
-    public void compressFolder(Worker work) {
+    public void compressFolder(Worker work) throws InterruptedException {
         try {
             // Objeto para referenciar a los archivos que queremos comprimir
             BufferedInputStream origin;
@@ -42,6 +42,9 @@ public class ZipCompressor {
             int i = 0;
 
             while (iterator.hasNext()) {
+                // Mientras hayamos pausando no hacemos nada
+                while(work.isPaused()) Thread.sleep(10);
+                
                 // ¿El usuario ha pulsado cancelar?
                 if (work.isTerminated()) break;
                 

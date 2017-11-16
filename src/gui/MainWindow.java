@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -34,34 +36,48 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        currentFileLabel = new javax.swing.JLabel();
+        authorLabel = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
+        jPanel1 = new javax.swing.JPanel();
         originLabel = new javax.swing.JLabel();
         destinationLabel = new javax.swing.JLabel();
         originTextField = new javax.swing.JTextField();
         destTextField = new javax.swing.JTextField();
         originButton = new javax.swing.JButton();
         destButton = new javax.swing.JButton();
-        currentFileLabel = new javax.swing.JLabel();
-        authorLabel = new javax.swing.JLabel();
-        progressBar = new javax.swing.JProgressBar();
-        compressButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
+        compressButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperZIP");
+
+        authorLabel.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        authorLabel.setText("David Medina & Geraldo Rodrigues");
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Compress file", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        jPanel1.setToolTipText("Compress");
+        jPanel1.setName("Compress"); // NOI18N
 
         originLabel.setText("Input folder : ");
 
         destinationLabel.setText("Output folder : ");
 
-        originTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                originTextFieldFocusLost(evt);
+        originTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                originTextFieldKeyReleased(evt);
             }
         });
 
-        destTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                destTextFieldFocusLost(evt);
+        destTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                destTextFieldActionPerformed(evt);
+            }
+        });
+        destTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                destTextFieldKeyReleased(evt);
             }
         });
 
@@ -79,16 +95,44 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        authorLabel.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        authorLabel.setText("David Medina & Geraldo Rodrigues");
-
-        compressButton.setText("Compress");
-        compressButton.setEnabled(false);
-        compressButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                compressButtonActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 516, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(destinationLabel)
+                        .addComponent(originLabel))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(originTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                        .addComponent(destTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(originButton)
+                        .addComponent(destButton))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(originLabel)
+                        .addComponent(originTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(originButton))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(destinationLabel)
+                        .addComponent(destTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(destButton))
+                    .addContainerGap(16, Short.MAX_VALUE)))
+        );
 
         cancelButton.setText("Cancel");
         cancelButton.setEnabled(false);
@@ -98,59 +142,70 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        compressButton.setText("Compress");
+        compressButton.setEnabled(false);
+        compressButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compressButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 214, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(compressButton)
+                    .addGap(18, 18, 18)
+                    .addComponent(cancelButton)
+                    .addContainerGap(24, Short.MAX_VALUE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 63, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(19, 19, 19)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(compressButton)
+                        .addComponent(cancelButton))
+                    .addContainerGap(19, Short.MAX_VALUE)))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(currentFileLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(authorLabel))
-                            .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(destinationLabel)
-                                    .addComponent(originLabel))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(originTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                    .addComponent(destTextField))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(originButton)
-                                    .addComponent(destButton)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(185, 185, 185)
-                        .addComponent(compressButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addComponent(currentFileLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(authorLabel))
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(177, 177, 177))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(originLabel)
-                    .addComponent(originTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(originButton))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(destinationLabel)
-                    .addComponent(destTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(destButton))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(compressButton)
-                    .addComponent(cancelButton))
-                .addGap(26, 26, 26)
+                .addGap(57, 57, 57)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(currentFileLabel)
@@ -214,6 +269,51 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_destButtonActionPerformed
 
     private void compressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compressButtonActionPerformed
+        doCompression();
+    }//GEN-LAST:event_compressButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        wk.pause();
+        int option = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure?",
+                "Cancel compression",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+
+        if (option == JOptionPane.YES_OPTION) {
+            wk.cancel(true);
+            cancelButton.setEnabled(false);
+            compressButton.setEnabled(true);
+        } else {
+            wk.resume();
+        }
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void originTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_originTextFieldKeyReleased
+        if (Files.isDirectory(Paths.get(originTextField.getText()), LinkOption.NOFOLLOW_LINKS)) {
+            if (!destTextField.getText().isEmpty()) {
+                compressButton.setEnabled(true);
+            } else {
+                compressButton.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_originTextFieldKeyReleased
+
+    private void destTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_destTextFieldKeyReleased
+        if (Files.isDirectory(Paths.get(destTextField.getText()))) {
+            if (!originTextField.getText().isEmpty()) {
+                compressButton.setEnabled(true);
+            } else {
+                compressButton.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_destTextFieldKeyReleased
+
+    private void destTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destTextFieldActionPerformed
+        doCompression();
+    }//GEN-LAST:event_destTextFieldActionPerformed
+
+    private void doCompression() {
         if (originTextField.getText().isEmpty() || destTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(
                     null,
@@ -236,35 +336,8 @@ public class MainWindow extends javax.swing.JFrame {
             wk = new Worker(zip, progressBar, currentFileLabel, compressButton, cancelButton);
             wk.execute();
         }
-    }//GEN-LAST:event_compressButtonActionPerformed
+    }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        wk.cancel(true);
-        cancelButton.setEnabled(false);
-        compressButton.setEnabled(true);
-    }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void originTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_originTextFieldFocusLost
-        System.out.println(originTextField.getText());
-        if(Files.isDirectory(Paths.get(originTextField.getText()), LinkOption.NOFOLLOW_LINKS)){
-            if(!destTextField.getText().isEmpty()) 
-                compressButton.setEnabled(true);
-            else
-                compressButton.setEnabled(false);
-        }
-    }//GEN-LAST:event_originTextFieldFocusLost
-
-    private void destTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_destTextFieldFocusLost
-        System.out.println(destTextField.getText());
-        System.out.println(Files.isDirectory(Paths.get(destTextField.getText())));
-        if(Files.isDirectory(Paths.get(destTextField.getText()))){
-            if(!originTextField.getText().isEmpty()) 
-                compressButton.setEnabled(true);
-            else
-                compressButton.setEnabled(false);
-        }
-    }//GEN-LAST:event_destTextFieldFocusLost
-    
     /**
      * @param args the command line arguments
      */
@@ -308,6 +381,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton destButton;
     private javax.swing.JTextField destTextField;
     private javax.swing.JLabel destinationLabel;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton originButton;
     private javax.swing.JLabel originLabel;
     private javax.swing.JTextField originTextField;

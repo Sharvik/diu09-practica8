@@ -63,6 +63,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         destinationLabel.setText("Output folder : ");
 
+        originTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                originTextFieldActionPerformed(evt);
+            }
+        });
         originTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 originTextFieldKeyReleased(evt);
@@ -117,7 +122,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 110, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(16, 16, 16)
@@ -164,7 +169,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 63, Short.MAX_VALUE)
+            .addGap(0, 68, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(19, 19, 19)
@@ -311,6 +316,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void destTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_destTextFieldActionPerformed
         doCompression();
     }//GEN-LAST:event_destTextFieldActionPerformed
+
+    private void originTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originTextFieldActionPerformed
+        doCompression();
+    }//GEN-LAST:event_originTextFieldActionPerformed
 
     private void doCompression() {
         if (originTextField.getText().isEmpty() || destTextField.getText().isEmpty()) {

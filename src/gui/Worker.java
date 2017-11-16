@@ -54,6 +54,7 @@ public class Worker extends SwingWorker<Boolean, Integer> {
             cancelButton.setEnabled(false);
         } else {
             progress.setValue(100);
+            compressButton.setEnabled(true);
             cancelButton.setEnabled(false);
             JOptionPane.showMessageDialog(
                     progress.getParent(), 

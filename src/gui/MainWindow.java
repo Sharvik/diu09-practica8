@@ -330,7 +330,10 @@ public class MainWindow extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         } else {
             Path in = Paths.get(originTextField.getText());
-            Path out = Paths.get(destTextField.getText() + File.separator +  in.getFileName().toString());
+            Path out = Paths.get(destTextField.getText() 
+                                + File.separator 
+                                + in.getFileName().toString()
+                                + ".zip");
             System.out.println(out);
             ZipCompressor zip = new ZipCompressor(in.toString(), out.toString());
             wk = new Worker(zip, progressBar, currentFileLabel, compressButton, cancelButton);
